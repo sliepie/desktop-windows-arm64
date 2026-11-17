@@ -1,15 +1,14 @@
 name: CI
 
 on:
-  push:
-    branches: [main]
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
     branches: [main]
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   NODE_VERSION: '22'
@@ -24,6 +23,7 @@ permissions:
 
 jobs:
   lint:
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     name: Lint (TS)
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -48,6 +48,7 @@ jobs:
         run: yarn lint
 
   typecheck:
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     name: Typecheck (TS)
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -73,6 +74,7 @@ jobs:
         run: yarn typecheck
 
   unit:
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     name: Unit + integration (vitest)
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -113,6 +115,7 @@ jobs:
           if-no-files-found: ignore
 
   windows-spawn:
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     name: Windows spawn smoke (cmd.exe shim)
     runs-on: windows-latest
     timeout-minutes: 10
@@ -142,6 +145,7 @@ jobs:
         run: yarn vitest run tests/unit/hl/codexStdinWindows.test.ts
 
   linux-spawn:
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     name: Linux spawn smoke (POSIX shim)
     runs-on: ubuntu-latest
     timeout-minutes: 10
