@@ -1,5 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import type { EngineAdapter, SpawnContext } from '../../../src/main/hl/engines/types';
+
+vi.mock('../../../src/main/logger', () => ({
+  mainLogger: { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn() },
+}));
 
 const { get } = await import('../../../src/main/hl/engines/registry');
 await import('../../../src/main/hl/engines/codex/adapter');

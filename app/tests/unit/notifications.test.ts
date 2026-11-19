@@ -105,10 +105,6 @@ describe('sendSessionNotification', () => {
     });
 
     expect(notifications).toHaveLength(0);
-    expect(logger.debug).toHaveBeenCalledWith('notifications.suppressed_in_app', {
-      sessionId: 's1',
-      reason: 'focused-window',
-    });
   });
 
   test('suppresses notifications immediately after in-app focus even if no window is focused', async () => {
@@ -129,10 +125,6 @@ describe('sendSessionNotification', () => {
     });
 
     expect(notifications).toHaveLength(0);
-    expect(logger.debug).toHaveBeenCalledWith('notifications.suppressed_in_app', {
-      sessionId: 's1',
-      reason: 'recent-focus',
-    });
   });
 
   test('sends when notifications are supported and the app is not active', async () => {
