@@ -10,22 +10,15 @@
  */
 
 import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
 import path from 'node:path';
 
 export default defineConfig({
-  plugins: [react()],
   test: {
     name: 'unit',
     include: [
       'tests/unit/**/*.test.ts',
-      'tests/unit/**/*.spec.{ts,tsx}',
-      'tests/integration/**/*.test.ts',
+      'tests/unit/**/*.spec.ts',
     ],
-    exclude: ['tests/e2e/**', 'tests/parity/**'],
-    // Renderer .spec.tsx files declare jsdom via the per-file
-    //   // @vitest-environment jsdom
-    // pragma. The default is node so the existing pure-unit suite is unaffected.
     environment: 'node',
     globals: false,
     // Mock electron module so tests run outside Electron

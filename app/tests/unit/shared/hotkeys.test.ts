@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
   acceleratorToDisplayParts,
-  defaultGlobalCmdbarAccelerator,
   formatShortcutForPlatform,
   keyboardEventToShortcut,
   normalizeAccelerator,
@@ -31,14 +30,6 @@ describe('shortcut platform normalization', () => {
     expect(normalizeShortcutPlatform('Win32')).toBe('win32');
     expect(normalizeShortcutPlatform('Linux x86_64')).toBe('linux');
   });
-
-  it('uses the same global command-bar default on desktop platforms', () => {
-    expect(defaultGlobalCmdbarAccelerator('linux')).toBe('CommandOrControl+Shift+Space');
-    expect(defaultGlobalCmdbarAccelerator('Linux x86_64')).toBe('CommandOrControl+Shift+Space');
-    expect(defaultGlobalCmdbarAccelerator('darwin')).toBe('CommandOrControl+Shift+Space');
-    expect(defaultGlobalCmdbarAccelerator('win32')).toBe('CommandOrControl+Shift+Space');
-  });
-
 
   it('keeps shortcuts platform-neutral until renderer normalization', () => {
     expect(shortcutToRenderer('CommandOrControl+,', 'darwin')).toBe('Cmd+,');

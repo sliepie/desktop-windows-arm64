@@ -282,12 +282,6 @@ export const WebContentsView = class {
   }
 };
 
-export const contentViewStub = {
-  addChildView: (_view: unknown): void => undefined,
-  removeChildView: (_view: unknown): void => undefined,
-  children: [] as unknown[],
-};
-
 export default {
   app,
   ipcMain,

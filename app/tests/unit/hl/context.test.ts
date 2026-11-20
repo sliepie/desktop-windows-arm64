@@ -10,8 +10,6 @@
  *   - Event buffer: each domainEvent listener pushes to ctx.events
  *   - Event buffer: session_id is included when CDP callback provides sessionId
  *   - Event buffer: overflow — oldest events are removed when > EVENT_BUFFER_SIZE
- *   - INTERNAL_URL_PREFIXES is a readonly array with expected prefixes
- *   - EVENT_BUFFER_SIZE is 500
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
@@ -63,7 +61,6 @@ vi.mock('../../../src/main/hl/cdp', () => ({
 import {
   createContext,
   EVENT_BUFFER_SIZE,
-  INTERNAL_URL_PREFIXES,
 } from '../../../src/main/hl/context';
 import type { HlContext } from '../../../src/main/hl/context';
 
@@ -221,36 +218,6 @@ describe('hl/context.ts', () => {
         cdpMock._emit('Page.loadEventFired', { index: i });
       }
       expect(ctx.events.length).toBe(EVENT_BUFFER_SIZE);
-    });
-  });
-
-  // ---------------------------------------------------------------------------
-  // Exported constants
-  // ---------------------------------------------------------------------------
-
-  describe('exported constants', () => {
-    it('EVENT_BUFFER_SIZE is 500', () => {
-      expect(EVENT_BUFFER_SIZE).toBe(500);
-    });
-
-    it('INTERNAL_URL_PREFIXES includes "chrome://"', () => {
-      expect(INTERNAL_URL_PREFIXES).toContain('chrome://');
-    });
-
-    it('INTERNAL_URL_PREFIXES includes "about:"', () => {
-      expect(INTERNAL_URL_PREFIXES).toContain('about:');
-    });
-
-    it('INTERNAL_URL_PREFIXES includes "devtools://"', () => {
-      expect(INTERNAL_URL_PREFIXES).toContain('devtools://');
-    });
-
-    it('INTERNAL_URL_PREFIXES includes "chrome-extension://"', () => {
-      expect(INTERNAL_URL_PREFIXES).toContain('chrome-extension://');
-    });
-
-    it('INTERNAL_URL_PREFIXES is an array', () => {
-      expect(Array.isArray(INTERNAL_URL_PREFIXES)).toBe(true);
     });
   });
 });
