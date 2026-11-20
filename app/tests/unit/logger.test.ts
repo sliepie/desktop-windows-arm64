@@ -1,8 +1,11 @@
-import { describe, it, expect, vi } from 'vitest';
+import { afterAll, describe, it, expect, vi } from 'vitest';
 
 // Importing the logger module creates the default channel loggers, which
-// would create log directories. Stub fs so the pure helper loads without I/O.
+// create log directories and print their paths. Stub fs and console.log so the
+// pure helper loads without I/O.
 vi.mock('node:fs', () => ({ default: { mkdirSync: vi.fn() } }));
+const consoleLog = vi.hoisted(() => vi.spyOn(console, 'log').mockImplementation(() => undefined));
+afterAll(() => consoleLog.mockRestore());
 
 const { sanitizeLogChannel } = await import('../../src/main/logger');
 
